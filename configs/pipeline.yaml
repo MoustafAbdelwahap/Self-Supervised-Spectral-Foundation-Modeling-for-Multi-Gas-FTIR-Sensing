@@ -1,0 +1,13 @@
+pretrain_config: configs/pretrain.yaml
+finetune_config: configs/finetune.yaml
+data_dir: data/raw
+output_dir: outputs
+device: auto
+seed: 42
+baseline_method: plsr
+baseline_n_components: 20
+ood_noise_factor: 2.0
+umap_num_samples: 5000
+llm_model_name: Qwen/Qwen2.5-0.5B
+report_title: "Spectral Foundation Model: Self-Supervised Multi-Gas FTIR Sensing"
+

@@ -1,0 +1,51 @@
+# Spectral Foundation Model (SFM) - Git Ignore Configuration
+
+# Datasets and raw spectra (HDF5, memory-maps, binary archives)
+/data/
+*.mmap
+*.h5
+*.hdf5
+*.npz
+*.npy
+
+# Whitelist deterministic test fixtures
+!tests/fixtures/*.npy
+!tests/fixtures/*.npz
+
+# Assessment PDF prompt (keep local, do not upload)
+*.pdf
+
+# Model checkpoints and weights (large binary artifacts)
+/checkpoints/
+*.pt
+*.pth
+*.pkl
+*.bin
+
+# TensorBoard and experiment tracking logs
+/runs/
+/results/
+
+# Python environment and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Testing and linters
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local IDE and scratch artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

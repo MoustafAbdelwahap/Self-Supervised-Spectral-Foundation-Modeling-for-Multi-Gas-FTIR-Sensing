@@ -1,0 +1,21 @@
+model:
+  encoder_dim: 256
+  encoder_layers: 4
+  encoder_heads: 8
+  encoder_mlp_ratio: 4
+  decoder_dim: 128
+  decoder_layers: 2
+  decoder_heads: 4
+  patch_size: 10
+  mask_ratio: 0.25  # 25% masking ratio (PDF requirement: 15% to 30% random masking)
+
+training:
+  epochs: 5
+  batch_size: 128
+  learning_rate: 2.0e-4
+  weight_decay: 0.05
+  warmup_epochs: 1
+  loss_alpha: 0.5
+  seed: 42
+  num_workers: 0
+  device: cpu
