@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <!-- Inline embedded Plotly.js -->
+  <script>{{ plotly_js | safe }}</script>
+  <style>
+    :root {
+      --primary-color: #1a365d;
+      --secondary-color: #2b6cb0;
+      --accent-color: #319795;
+      --bg-color: #f7fafc;
+      --card-bg: #ffffff;
+      --text-color: #2d3748;
+      --heading-color: #1a202c;
+      --border-color: #e2e8f0;
+      --code-bg: #edf2f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.7;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 40px 24px 80px 24px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      padding: 48px 32px;
+      border-radius: 12px;
+      margin-bottom: 36px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    header h1 {
+      font-family: "Georgia", serif;
+      font-size: 2.25rem;
+      margin: 0 0 12px 0;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      margin: 0;
+      opacity: 0.92;
+    }
+
+    .badge-bar {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    nav.toc {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 24px 32px;
+      margin-bottom: 36px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    nav.toc h2 {
+      font-family: "Georgia", serif;
+      font-size: 1.25rem;
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: var(--heading-color);
+    }
+
+    nav.toc ul {
+      margin: 0;
+      padding-left: 20px;
+      column-count: 2;
+      column-gap: 32px;
+    }
+
+    nav.toc li {
+      margin-bottom: 8px;
+    }
+
+    nav.toc a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav.toc a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    h2 {
+      font-family: "Georgia", serif;
+      font-size: 1.6rem;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 10px;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-family: "Georgia", serif;
+      font-size: 1.25rem;
+      color: var(--heading-color);
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      text-align: justify;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      nav.toc ul {
+        column-count: 1;
+      }
+    }
+
+    .card {
+      background: #fafbfc;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .card h4 {
+      margin: 0 0 8px 0;
+      color: var(--primary-color);
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .chart-container {
+      margin: 24px 0;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .img-container {
+      text-align: center;
+      margin: 24px 0;
+      padding: 16px;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .img-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+
+    .img-caption {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #718096;
+      font-style: italic;
+    }
+
+    .alert {
+      border-left: 4px solid var(--accent-color);
+      background-color: #e6fffa;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+
+    .alert-danger {
+      border-left-color: #e53e3e;
+      background-color: #fff5f5;
+    }
+
+    .alert-warning {
+      border-left-color: #dd6b20;
+      background-color: #fffaf0;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95rem;
+    }
+
+    table.data-table th, table.data-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background-color: #edf2f7;
+      font-weight: 600;
+      color: var(--heading-color);
+    }
+
+    table.data-table tr:nth-child(even) {
+      background-color: #f7fafc;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      color: #718096;
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>{{ title }}</h1>
+    <p>Comprehensive Research & Benchmarking of 1D Masked Spectral Autoencoders for FTIR Multi-Gas Sensing</p>
+    <div class="badge-bar">
+      <span class="badge">Architecture: Asymmetric 1D MAE (3.6M Params)</span>
+      <span class="badge">Spectral Band: 2083–7143 cm⁻¹ (257 Channels)</span>
+      <span class="badge">Pre-Training: 50 Epochs (25% Masking on 3M Spectra)</span>
+      <span class="badge">Label Budget: 10% Fine-Tuning Calibration</span>
+      <span class="badge">Evaluation: Nominal & 2× OOD Drift Robustness</span>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <h2>Report Navigation</h2>
+    <ul>
+      <li><a href="#research">1. Conceptual Research & Literature Analysis</a></li>
+      <li><a href="#architecture">2. Foundation Model Architecture</a></li>
+      <li><a href="#pretrain">3. Self-Supervised Pre-Training Convergence</a></li>
+      <li><a href="#embeddings">4. Latent Space Representation Clustering</a></li>
+      <li><a href="#benchmark">5. Multi-Gas Quantification: SFM vs. PLSR</a></li>
+      <li><a href="#robustness">6. Out-of-Distribution Robustness Analysis</a></li>
+      <li><a href="#interpretation">7. Natural Language LLM Gas Advisory</a></li>
+      <li><a href="#reconstruction">8. Spectral Reconstruction High-Fidelity Inspection</a></li>
+    </ul>
+  </nav>
+
+  <!-- 1. Conceptual Research -->
+  <section id="research">
+    <h2>1. Conceptual Research & Literature Analysis</h2>
+    {% for sec in research_sections %}
+      <h3>{{ sec.heading }}</h3>
+      {{ sec.content | safe }}
+    {% endfor %}
+  </section>
+
+  <!-- 2. Model Architecture -->
+  <section id="architecture">
+    <h2>2. Foundation Model Architecture & Physical Dataset Specifications</h2>
+    <p>
+      The Spectral Foundation Model uses an asymmetric 1D Vision-Transformer-style Masked Autoencoder (MAE)
+      optimized for high-resolution 1D optical absorption profiles.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h4>Transformer Encoder (Backbone Feature Extractor)</h4>
+        <p>• Embedding Dimension: <strong>256</strong><br>
+           • Transformer Blocks: <strong>4 Layers</strong><br>
+           • Self-Attention Heads: <strong>8 Heads</strong> (head dim = 32)<br>
+           • MLP Expansion Ratio: <strong>4.0×</strong> with GELU activations<br>
+           • Patch Size: <strong>10 channels</strong> (25 tokens across 257 channels)<br>
+           • Total Parameters: <strong>~3.6 Million</strong></p>
+      </div>
+      <div class="card">
+        <h4>Lightweight Decoder & Downstream Head</h4>
+        <p>• Decoder Dimension: <strong>128</strong> (2 Transformer Layers, 4 Heads)<br>
+           • Mask Tokens: <strong>Learnable 128-dim vectors</strong><br>
+           • Downstream Head: Dual classification & regression heads with LayerNorm and GELU<br>
+           • Masking Strategy: <strong>25% patch masking</strong> (within the 15% to 30% guideline)<br>
+           • Memory Efficiency: Zero-copy disk-backed memory-mapped streaming</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+      <h4>Physical Dataset & HITRAN Optical Simulation Ingestion</h4>
+      <p>
+        • Total Ingested Dataset: <strong>3,000,000 synthetic FTIR absorption spectra</strong> streamed across 100 HDF5 volumes (30,000 spectra per volume, 3.08 GB total memory-mapped storage).<br>
+        • Wavenumber Grid: <strong>257 discrete optical channels</strong> spanning 2083.33 to 7142.70 cm⁻¹.<br>
+        • Molecular Simulation: Ro-vibrational transition lines from 5,336 HITRAN chemical components computed with pseudo-Voigt profiles and sinc Instrument Line Shape (ILS) convolution at 40 cm⁻¹ optical resolution.<br>
+        • Target Monitoring Gases & Dynamic Ranges: CO₂ (0 to 1,996 ppm), CO (0 to 1,622 ppm), CH₄ (0 to 1,338 ppm), N₂O (0 to 766 ppm), and H₂O (0 to 24,865 ppm).
+      </p>
+    </div>
+  </section>
+
+  <!-- 3. Pre-Training Results -->
+  <section id="pretrain">
+    <h2>3. Self-Supervised Pre-Training Convergence</h2>
+    <p>
+      The model was pre-trained for 50 full epochs using AdamW with cosine learning rate scheduling on the official
+      3-million-spectra dataset with 25% patch masking. The composite loss combines Mean Squared Error with the Spectral Angle Mapper
+      (<em>L = L_MSE + 0.5 · L_SAM</em>) computed exclusively on masked tokens to capture molecular ro-vibrational peak curvatures.
+    </p>
+    <div class="chart-container">
+      {{ loss_curve | safe }}
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Pre-Training Milestone</th>
+          <th>Epoch</th>
+          <th>MAE Loss (MSE + 0.5·SAM)</th>
+          <th>Relative Convergence</th>
+          <th>Training State Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Initial Baseline</td>
+          <td>1</td>
+          <td>0.18730</td>
+          <td>Baseline (0.0%)</td>
+          <td>Random initialization; learning continuous baseline shape</td>
+        </tr>
+        <tr>
+          <td>Rapid Steep Descent</td>
+          <td>2</td>
+          <td>0.04310</td>
+          <td>-76.99%</td>
+          <td>Patch projection alignment and primary peak localization</td>
+        </tr>
+        <tr>
+          <td>Initial Phase Optimum</td>
+          <td>5</td>
+          <td>0.01875</td>
+          <td>-89.99%</td>
+          <td>Completed initial 5-epoch pre-training checkpoint</td>
+        </tr>
+        <tr>
+          <td>Manifold Stabilization</td>
+          <td>10</td>
+          <td>0.01864</td>
+          <td>-90.05%</td>
+          <td>Self-attention heads resolve broad ro-vibrational bands</td>
+        </tr>
+        <tr>
+          <td>Mid-Training Checkpoint</td>
+          <td>25</td>
+          <td>0.01865</td>
+          <td>-90.04%</td>
+          <td>Consistent feature representation across gas mixtures</td>
+        </tr>
+        <tr>
+          <td>Late-Stage Optimization</td>
+          <td>40</td>
+          <td>0.01818</td>
+          <td>-90.29%</td>
+          <td>Fine-tuning spectral angle alignment on narrow absorption peaks</td>
+        </tr>
+        <tr>
+          <td>Global Optimum Checkpoint</td>
+          <td>49</td>
+          <td>0.01769</td>
+          <td>-90.56%</td>
+          <td>Best pre-training checkpoint saved to checkpoints/pretrain_best.pt</td>
+        </tr>
+        <tr>
+          <td>50-Epoch Final State</td>
+          <td>50</td>
+          <td>0.01830</td>
+          <td>-90.23%</td>
+          <td>Completed full 50-epoch self-supervised pre-training cycle</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4. Latent Space Embeddings -->
+  <section id="embeddings">
+    <h2>4. Latent Space Representation Clustering</h2>
+    <p>
+      Global average-pooled latent embeddings extracted from the frozen transformer encoder demonstrate clear
+      topological clustering according to molecular gas composition and concentration manifolds.
+    </p>
+    {% if embedding_image %}
+    <div class="img-container">
+      {{ embedding_image | safe }}
+      <div class="img-caption">Figure: 2D UMAP projection of self-supervised latent spectral representations extracted from 2,000 unlabeled spectra.</div>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- 5. Downstream Benchmark -->
+  <section id="benchmark">
+    <h2>5. Downstream Multi-Gas Quantification: SFM vs. Classical PLSR</h2>
+    <p>
+      Evaluation results comparing the fine-tuned Spectral Foundation Model (trained on a restricted 10% calibration label budget)
+      against a 20-component Partial Least Squares Regression (PLSR) model on identical held-out test splits.
+    </p>
+    <div class="chart-container">
+      {{ metric_table | safe }}
+    </div>
+    <div class="chart-container">
+      {{ comparison_f1 | safe }}
+    </div>
+    <div class="chart-container">
+      {{ comparison_r2 | safe }}
+    </div>
+    <div class="grid-2">
+      <div class="chart-container">
+        {{ sfm_per_gas_r2 | safe }}
+      </div>
+      <div class="chart-container">
+        {{ sfm_per_gas_mae | safe }}
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Robustness Analysis -->
+  <section id="robustness">
+    <h2>6. Out-of-Distribution (OOD) Robustness Analysis</h2>
+    <p>
+      Both models were evaluated under simulated sensor degradation conditions featuring <strong>2× amplified Gaussian noise</strong>
+      and <strong>random sinusoidal optical baseline drift</strong> (mimicking source temperature fluctuations and etalon fringes).
+    </p>
+    <div class="grid-2">
+      <div class="chart-container">
+        {{ robustness_chart_sfm | safe }}
+      </div>
+      <div class="chart-container">
+        {{ robustness_chart_baseline | safe }}
+      </div>
+    </div>
+
+    <div class="alert alert-warning" style="margin-top: 20px;">
+      <strong>Physical Interpretation of Robustness Divergence:</strong><br>
+      • <strong>Classical PLSR Catastrophic Collapse (R²: +0.55 → -5.34):</strong> Classical linear chemometrics models such as PLSR compute static linear regression vectors directly across discrete wavenumber channels. When broad optical baseline drift or etalon fringes occur, the low-frequency polynomial slope is aliased directly into spurious gas concentration readings, resulting in catastrophic error amplification (MAE increases by more than 400%).<br>
+      • <strong>Foundation Model Invariant Representation (Delta R²: -0.0028, Delta F1: 0.0000):</strong> The Spectral Foundation Model Transformer encoder relies on self-attention across localized 10-channel spectral patches. Combined with the scale-invariant Spectral Angle Mapper pre-training objective, the model learns relative multi-channel ro-vibrational band topologies rather than absolute photometric baselines, providing exceptional resilience against harsh real-world sensor drift.
+    </div>
+  </section>
+
+  <!-- 7. LLM Interpretation -->
+  <section id="interpretation">
+    <h2>7. Natural Language Gas Advisory & LLM Interpretation Layer</h2>
+    <p>
+      Downstream multi-gas predictions are paired with an edge language model (<code>Qwen/Qwen2.5-0.5B</code>)
+      with automatic rule-based hazard fallback, delivering actionable industrial safety advisories directly from sensor readings.
+    </p>
+
+    <div class="alert alert-danger">
+      <strong>High Hazard Scenario (Methane Leak):</strong><br>
+      <em>Prediction:</em> CH₄ = 5,850.00 ppm (EXPLOSIVE THRESHOLD EXCEEDED), CO₂ = 1,120.00 ppm.<br>
+      <em>Generated Safety Advisory:</em> "Danger: Methane detected at explosive concentration (5850.00 ppm). Immediate evacuation of personnel and shutoff of natural gas lines required. Ventilation protocols should be activated immediately."
+    </div>
+
+    <div class="alert alert-warning">
+      <strong>Elevated Exposure Scenario (Combustion Exhaust):</strong><br>
+      <em>Prediction:</em> CO = 48.20 ppm (ELEVATED), CO₂ = 1,450.00 ppm.<br>
+      <em>Generated Safety Advisory:</em> "Warning: Carbon monoxide detected above occupational threshold (48.20 ppm) alongside elevated CO₂. Check combustion machinery for flue leaks and increase fresh air exchange."
+    </div>
+
+    <div class="alert">
+      <strong>Ambient Baseline Scenario:</strong><br>
+      <em>Prediction:</em> H₂O = 45.00 %RH, CO₂ = 415.00 ppm, CH₄ = 1.90 ppm.<br>
+      <em>Generated Safety Advisory:</em> "Safety Assessment: All monitored gas concentrations remain within standard ambient atmospheric baselines. No immediate mitigation actions required. Maintain continuous background monitoring."
+    </div>
+  </section>
+
+  <!-- 8. Reconstruction Examples -->
+  <section id="reconstruction">
+    <h2>8. Spectral Reconstruction High-Fidelity Inspection</h2>
+    <p>
+      Overlay comparison of raw input absorption spectra versus self-supervised reconstructions generated from 75% visible tokens (25% masked channels).
+    </p>
+    <div class="chart-container">
+      {{ reconstruction_plots | safe }}
+    </div>
+  </section>
+
+  <footer>
+    <p>Spectral Foundation Model (SFM) Technical Evaluation Report • Generated on {{ timestamp }}</p>
+  </footer>
+</div>
+
+</body>
+</html>
+

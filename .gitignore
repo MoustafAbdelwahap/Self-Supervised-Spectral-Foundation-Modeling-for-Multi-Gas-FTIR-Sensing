@@ -12,6 +12,9 @@
 !tests/fixtures/*.npy
 !tests/fixtures/*.npz
 
+# Export archives
+*.zip
+
 # Assessment PDF prompt (keep local, do not upload)
 *.pdf
 
